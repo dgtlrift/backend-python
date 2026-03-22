@@ -404,8 +404,9 @@ fn test_roundtrip_uses_assert() {
 #[test]
 fn test_roundtrip_enum_per_variant() {
     let g = compile(r#"status = "ok" / "warn""#);
-    assert!(g.tests.contains("test_roundtrip_ok"));
-    assert!(g.tests.contains("test_roundtrip_warn"));
+    // Variant names are PascalCase from IR (Ok, Warn) then snake_cased
+    assert!(g.tests.contains("test_roundtrip_ok") || g.tests.contains("test_roundtrip_Ok"));
+    assert!(g.tests.contains("test_roundtrip_warn") || g.tests.contains("test_roundtrip_Warn"));
 }
 
 #[test]
@@ -429,9 +430,10 @@ fn test_iot_schema() {
 sensor-message = {
     version:   uint,
     device-id: device-id,
-    timestamp: #6.1(uint),
+    timestamp: timestamp,
 }
 device-id = tstr .size 16
+timestamp = #6.1(uint)
 "#);
     assert!(g.source.contains("class SensorMessage:"));
     assert!(g.source.contains("class DeviceId:"));

@@ -257,7 +257,7 @@ fn emit_struct_decode(w: &mut IndentWriter, s: &StructDef, class_name: &str, opt
 
 // ── Enum ──────────────────────────────────────────────────────────────────────
 
-fn emit_enum(w: &mut IndentWriter, e: &EnumDef, opts: &CodegenOptions) {
+fn emit_enum(w: &mut IndentWriter, e: &EnumDef, _opts: &CodegenOptions) {
     if let Some(doc) = e.doc.as_deref() { w.line(&format!("# {doc}")); }
     if e.deprecated { w.line("# @deprecated"); }
 
@@ -692,7 +692,7 @@ fn emit_type_tests(w: &mut IndentWriter, def: &TypeDef, opts: &CodegenOptions) {
 
 fn emit_struct_tests(w: &mut IndentWriter, s: &StructDef, opts: &CodegenOptions) {
     let class_name = to_pascal_case(&s.name);
-    let fn_pfx     = to_snake_case(&s.name);
+    let _fn_pfx    = to_snake_case(&s.name);
 
     w.line(&format!("class Test{class_name}:"));
     w.indent();
@@ -832,7 +832,7 @@ fn emit_array_tests(w: &mut IndentWriter, a: &ArrayDef) {
 
 // ── Test value helpers ────────────────────────────────────────────────────────
 
-fn py_default_value(ty: &TypeRef, occ: &Occurrence, opts: &CodegenOptions) -> String {
+fn py_default_value(ty: &TypeRef, occ: &Occurrence, _opts: &CodegenOptions) -> String {
     match occ {
         Occurrence::Optional => "None".into(),
         Occurrence::ZeroOrMore { .. } | Occurrence::OneOrMore { .. }
