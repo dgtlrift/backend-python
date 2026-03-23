@@ -542,20 +542,22 @@ fn py_constraint_check(c: &Constraint, expr: &str) -> Option<String> {
             (None, None)         => None,
         },
         Constraint::ValueRangeInt { min, max, inclusive } => {
-            let op = if *inclusive { "=" } else { "" };
+            let ge = if *inclusive { ">=" } else { ">" };
+            let le = if *inclusive { "<=" } else { "<" };
             match (min, max) {
-                (Some(lo), Some(hi)) => Some(format!("{lo} <{op}= {expr} <{op}= {hi}")),
-                (Some(lo), None)     => Some(format!("{expr} >{op}= {lo}")),
-                (None, Some(hi))     => Some(format!("{expr} <{op}= {hi}")),
+                (Some(lo), Some(hi)) => Some(format!("{lo} {le} {expr} {le} {hi}")),
+                (Some(lo), None)     => Some(format!("{expr} {ge} {lo}")),
+                (None, Some(hi))     => Some(format!("{expr} {le} {hi}")),
                 (None, None)         => None,
             }
         }
         Constraint::ValueRangeUint { min, max, inclusive } => {
-            let op = if *inclusive { "=" } else { "" };
+            let ge = if *inclusive { ">=" } else { ">" };
+            let le = if *inclusive { "<=" } else { "<" };
             match (min, max) {
-                (Some(lo), Some(hi)) => Some(format!("{lo} <{op}= {expr} <{op}= {hi}")),
-                (Some(lo), None)     => Some(format!("{expr} >{op}= {lo}")),
-                (None, Some(hi))     => Some(format!("{expr} <{op}= {hi}")),
+                (Some(lo), Some(hi)) => Some(format!("{lo} {le} {expr} {le} {hi}")),
+                (Some(lo), None)     => Some(format!("{expr} {ge} {lo}")),
+                (None, Some(hi))     => Some(format!("{expr} {le} {hi}")),
                 (None, None)         => None,
             }
         }
